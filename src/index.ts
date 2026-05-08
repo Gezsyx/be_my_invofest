@@ -22,3 +22,8 @@ app.use("/pembicara", pembicaraRoutes);
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+
+
+
+// DB PASSWORD : doijq7Y2UE=d-=wo0wd
