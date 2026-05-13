@@ -11,12 +11,10 @@ let events: Event[] = [
   },
 ];
 
-// Read all events
 export const getEvents = (req: Request, res: Response) => {
   res.json(events);
 };
 
-// Create a new event
 export const createEvent = (req: Request, res: Response) => {
   const { nama, pembicara, tanggal, jam } = req.body;
 
@@ -32,11 +30,39 @@ export const createEvent = (req: Request, res: Response) => {
     jam: jam,
   };
   events.push(newEvent);
-  res.status(201).json({ message: "berhasil ditambahkan", event: newEvent });
+  res
+    .status(201)
+    .json({ message: "Data berhasil ditambahkan", event: newEvent });
 };
 
-// Update an event
-export const updateEvent = (req: Request, res: Response) => {};
+export const getEventById = (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const event = events.find((e) => e.id === id);
 
-// Delete an event
-export const deleteEvent = (req: Request, res: Response) => {};
+  if (!event) {
+    return res.status(404).json({ error: "Data tidak ditemukan" });
+  }
+  res.json(event);
+};
+
+export const updateEvent = (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const event = events.find((e) => e.id === id);
+
+  if (!event) {
+    return res.status(404).json({ error: "Data tidak ditemukan" });
+  }
+
+  event.nama = req.body.nama || event.nama;
+  event.pembicara = req.body.pembicara || event.pembicara;
+  event.tanggal = req.body.tanggal || event.tanggal;
+  event.jam = req.body.jam || event.jam;
+  res.json({ message: "Data berhasil diperbarui", event });
+};
+
+export const deleteEvent = (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  events = events.filter((e) => e.id !== id);
+  res.json({ message: "Data berhasil dihapus" });
+};
